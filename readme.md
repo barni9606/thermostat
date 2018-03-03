@@ -7,7 +7,7 @@ This is a Project-Laboratory project in the Budapest University of Technology an
 + 10k ohm resistor
 + 5V relay (preferably with light coupling)
 + breadboard
-+ 3 MF, 3 MM and an optional FF jumper cable
++ 3 MF, 3 FF and an optional MM jumper cable
 
 ### Wiring diagram and Schematic
 ![wiring diagram](/imgs/wiring_diagram.png)

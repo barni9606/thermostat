@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row position-relative">
+    <div style="width: 57px"></div>
+    <div class="container-fluid width-100-57" style="height:40px; text-align: center">
+      <div class="row">
+        <div class="col7-xs-1" *ngFor="let day of this.day_names">{{day}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row position-relative">
+    <div class="GENA3c">
+      <div class="s4ZaLd" *ngFor="let hour of this.hours"><span class="ebZ3od MANBAf">{{hour}}</span></div>
+      <div class="Pgg38c">
+        <div class="lmNFmc pCoqfc">GMT+01</div>
+        <div class="lmNFmc MANBAf" *ngFor="let hour of this.hours">{{hour}}</div>
+      </div>
+    </div>
+    <div aria-hidden="true" class="wyrRZc">
+      <div class="mmsF1c" *ngFor="let hour of this.hours"></div>
+    </div>
+    <div class="width-100-57">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col7-xs-1 day" *ngFor="let day of this.days"><app-day [day]="day"></app-day> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
