@@ -1,1 +1,5 @@
-{{day}}
+<app-period *ngFor="let period of this.day.periods"
+            style="width: 100%; display: block;"
+            [style.height]="period.getHeight()"
+            [period]="period"
+></app-period>

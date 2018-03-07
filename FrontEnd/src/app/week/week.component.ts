@@ -9,7 +9,7 @@ export class WeekComponent implements OnInit {
 
   public days: number[];
   public hours: string[];
-  public day_names: string[];
+  public day_names: object[];
 
   constructor() {
     this.days = [0, 1, 2, 3, 4, 5, 6];
@@ -18,7 +18,15 @@ export class WeekComponent implements OnInit {
       '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
       '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
     ];
-    this.day_names = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
+    this.day_names = [
+      { 'long': 'Hétfő',     'short': 'H',   'number': 0 },
+      { 'long': 'Kedd',      'short': 'K',   'number': 1 },
+      { 'long': 'Szerda',    'short': 'Sze', 'number': 2 },
+      { 'long': 'Csütörtök', 'short': 'Cs',  'number': 3 },
+      { 'long': 'Péntek',    'short': 'P',   'number': 4 },
+      { 'long': 'Szombat',   'short': 'Szo', 'number': 5 },
+      { 'long': 'Vasárnap',  'short': 'V',   'number': 6 }
+    ];
   }
 
   ngOnInit() {

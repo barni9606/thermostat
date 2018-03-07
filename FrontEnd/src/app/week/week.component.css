@@ -6,11 +6,24 @@
 }
 
 .width-100-57 {
-  width: calc(100% - 57px);
+  width: calc(100% - 4rem);
 }
 
 .position-relative {
   position: relative;
+}
+
+.day-name-short {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .day-name-short {
+    display: inherit;
+  }
+  .day-name-long {
+    display: none;
+  }
 }
 
 .GENA3c {
@@ -81,7 +94,7 @@
   content: '';
   border-bottom: #e0e0e0 1px solid;
   position: absolute;
-  width: calc(100% - 57px);
+  width: calc(100% - 4rem);
   margin-top: -1px;
   z-index: 3;
   pointer-events: none;
