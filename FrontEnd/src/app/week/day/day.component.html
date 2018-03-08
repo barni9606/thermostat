@@ -1,5 +1,8 @@
-<app-period *ngFor="let period of this.day.periods"
-            style="width: 100%; display: block;"
-            [style.height]="period.getHeight()"
-            [period]="period"
-></app-period>
+<div class="day" (mousedown)="this.onMouseDown($event)" (mousemove)="this.onMouseMove($event)" (mouseup)="this.onMouseUp($event)" (mouseleave)="this.onMouseOut($event)">
+  <app-period *ngFor="let period of this.day.periods"
+              style="width: 100%; display: block;"
+              [style.height]="period.getHeight()"
+              [period]="period"
+  ></app-period>
+  <ng-template appNewPeriod></ng-template>
+</div>

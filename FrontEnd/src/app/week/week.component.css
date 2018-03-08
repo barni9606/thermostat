@@ -1,8 +1,8 @@
-.day {
-  height: 960px;
+.week-day {
   padding-left: 0;
-  padding-right: 12px;
-  border-right: #e0e0e0 1px solid;
+  padding-right: 0;
+  border-right: #939393 1px solid;
+  height: 960px;
 }
 
 .width-100-57 {
