@@ -9,7 +9,7 @@ import {Period} from '../../../data/Period';
 export class PeriodComponent implements OnInit {
   public color: string;
   colors = [
-    'AntiqueWhite', 'Azure', 'DarkGray', 'Gainsboro'
+    'AntiqueWhite', 'Azure', 'DarkGray'
   ];
   @Input() period: Period;
 

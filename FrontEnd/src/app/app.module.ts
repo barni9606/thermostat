@@ -8,6 +8,8 @@ import { DayComponent } from './week/day/day.component';
 import { PeriodComponent } from './week/day/period/period.component';
 import { NewPeriodDirective } from './week/day/new-period/new-period.directive';
 import { NewPeriodComponent } from './week/day/new-period/new-period.component';
+import { ModalModule } from 'ngx-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { NewPeriodComponent } from './week/day/new-period/new-period.component';
     NewPeriodComponent
   ],
   imports: [
-    BrowserModule
+    ModalModule.forRoot(),
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

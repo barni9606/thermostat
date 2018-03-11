@@ -29,7 +29,7 @@ export class DayComponent implements OnInit {
     for (let i = 0; i < 10; i++) {
       const a = Math.floor(Math.random() * 24);
       const b = a + Math.floor(Math.random() * (24 - a));
-      this.day.addPeriod(new Period(new Time(a, 0), new Time(b, 0)));
+      this.day.addPeriod(new Period(new Time(a, a), new Time(b, b)));
     }
   }
 
@@ -45,15 +45,17 @@ export class DayComponent implements OnInit {
         if (this.viewContainerRef && this.viewContainerRef.get(0)) {
           this.viewContainerRef.get(0).destroy();
         } else {
-          this.flag = true;
+
           const offset = target.getClientRects().item(0);
 
           this.componentFactory = this.componentFactoryResolver.resolveComponentFactory(NewPeriodComponent);
           this.viewContainerRef = this.newPeriodHost.viewContainerRef;
           this.viewContainerRef.clear();
           this.componentRef = this.viewContainerRef.createComponent(this.componentFactory);
-
-          (<NewPeriodComponent>this.componentRef.instance).pos.top = event.clientY - offset.top;
+          const instance = <NewPeriodComponent>this.componentRef.instance;
+          instance.parent = this;
+          instance.setTop(event.clientY - offset.top);
+          this.flag = true;
         }
       }
       if (target.parentElement.parentElement.className === 'day' && target.className !== 'new-period') {
@@ -71,13 +73,12 @@ export class DayComponent implements OnInit {
       const target = event.target || event.srcElement;
       if (target.className === 'day') {
         const offset = target.getClientRects().item(0);
-        // console.log('x:' + (event.clientX - offset.left) + ' y:' + (event.clientY - offset.top));
-        const pos = (<NewPeriodComponent>this.componentRef.instance).pos;
-        pos.height = event.clientY - offset.top - pos.top;
+        const newPeriod = (<NewPeriodComponent>this.componentRef.instance);
+        newPeriod.setHeight(event.clientY - offset.top);
       } else if (target.parentElement.parentElement.className === 'day') {
         const offset = target.parentElement.parentElement.getClientRects().item(0);
-        const pos = (<NewPeriodComponent>this.componentRef.instance).pos;
-        pos.height = event.clientY - offset.top - pos.top;
+        const newPeriod = (<NewPeriodComponent>this.componentRef.instance);
+        newPeriod.setHeight(event.clientY - offset.top);
       }
     }
   }
@@ -90,6 +91,20 @@ export class DayComponent implements OnInit {
   onMouseOut(event): void {
     event.preventDefault();
     // this.flag = false;
+  }
+
+
+  public addNewPeriod(startHour: number, startMinute: number, finishHour: number, finishMinute: number, temperature: number): void {
+    this.day.addPeriod(new Period(new Time(startHour, startMinute), new Time(finishHour, finishMinute)));
+    if (this.viewContainerRef && this.viewContainerRef.get(0)) {
+      this.viewContainerRef.get(0).destroy();
+    }
+  }
+
+  public removeNewPeriod(): void {
+    if (this.viewContainerRef && this.viewContainerRef.get(0)) {
+      this.viewContainerRef.get(0).destroy();
+    }
   }
 
 }
