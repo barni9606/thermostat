@@ -5,27 +5,97 @@
     <form>
       <div class="form-group">
         <label for="startHour">Start hour</label>
-        <input type="number" class="form-control" min="0" max="24" [(ngModel)]="startHour" id="startHour" name="startHour" required>
+        <input type="number" class="form-control" min="0" max="24" [(ngModel)]="startHour" id="startHour"
+               name="startHour" required #startHourValidator="ngModel">
+        <div *ngIf="startHourValidator.invalid && (startHourValidator.dirty || startHourValidator.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="startHourValidator.errors.required">
+            Start hour is required.
+          </div>
+          <div *ngIf="startHourValidator.errors.min">
+            Start hour has to be at least 0.
+          </div>
+          <div *ngIf="startHourValidator.errors.max">
+            Start hour cannot be larger than 24.
+          </div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="startMinute">Start minute</label>
-        <input type="number" class="form-control" min="0" max="59" [(ngModel)]="startMinute" id="startMinute" name="startMinute" required>
+        <input type="number" class="form-control" min="0" max="59" [(ngModel)]="startMinute" id="startMinute"
+               name="startMinute" required #startMinuteValidator="ngModel" step="15">
+        <div *ngIf="startMinuteValidator.invalid && (startMinuteValidator.dirty || startMinuteValidator.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="startMinuteValidator.errors.required">
+            Start minute is required.
+          </div>
+          <div *ngIf="startMinuteValidator.errors.min">
+            Start minute has to be at least 0.
+          </div>
+          <div *ngIf="startMinuteValidator.errors.max">
+            Start minute cannot be larger than 59.
+          </div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="finishHour">Finish hour</label>
-        <input type="number" class="form-control" min="0" max="24" [(ngModel)]="finishHour" id="finishHour" name="finishHour" required>
+        <input type="number" class="form-control" min="0" max="24" [(ngModel)]="finishHour" id="finishHour"
+               name="finishHour" required #finishHourValidator="ngModel">
+        <div *ngIf="finishHourValidator.invalid && (finishHourValidator.dirty || finishHourValidator.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="finishHourValidator.errors.required">
+            Finish hour is required.
+          </div>
+          <div *ngIf="finishHourValidator.errors.min">
+            Finish hour has to be at least 0.
+          </div>
+          <div *ngIf="finishHourValidator.errors.max">
+            Finish hour cannot be larger than 24.
+          </div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="finishMinute">Finish minute</label>
-        <input type="number" class="form-control" min="0" max="59" [(ngModel)]="finishMinute" id="finishMinute" name="finishMinute" required>
+        <input type="number" class="form-control" min="0" max="59" [(ngModel)]="finishMinute" id="finishMinute"
+               name="finishMinute" required #finishMinuteValidator="ngModel" step="15">
+        <div *ngIf="finishMinuteValidator.invalid && (finishMinuteValidator.dirty || finishMinuteValidator.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="finishMinuteValidator.errors.required">
+            Finish minute is required.
+          </div>
+          <div *ngIf="finishMinuteValidator.errors.min">
+            Finish minute has to be at least 0.
+          </div>
+          <div *ngIf="finishMinuteValidator.errors.max">
+            Finish minute cannot be larger than 59.
+          </div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="temperature">Temperature</label>
-        <input type="number" class="form-control" min="0" max="30" [(ngModel)]="temperature" id="temperature" name="temperature" required>
+        <input type="number" class="form-control" min="0" max="40" [(ngModel)]="temperature" id="temperature"
+               name="temperature" required #temperatureValidator="ngModel" step="0.5">
+        <div *ngIf="temperatureValidator.invalid && (temperatureValidator.dirty || temperatureValidator.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="temperatureValidator.errors.required">
+            Temperature is required.
+          </div>
+          <div *ngIf="temperatureValidator.errors.min">
+            Temperature has to be at least 0.
+          </div>
+          <div *ngIf="temperatureValidator.errors.max">
+            Temperature cannot be larger than 40.
+          </div>
+        </div>
       </div>
 
     </form>

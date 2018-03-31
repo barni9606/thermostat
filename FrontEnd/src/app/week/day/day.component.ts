@@ -1,5 +1,5 @@
 import {
-  Component, ComponentFactory, ComponentFactoryResolver, Input, OnInit, ViewChild,
+  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import {Day} from '../../data/Day';
@@ -16,25 +16,24 @@ import {NewPeriodComponent} from './new-period/new-period.component';
 export class DayComponent implements OnInit {
 
   @Input() dayNumber: number;
-  public day: Day;
+  @Input() public day: Day;
 
   private flag = false;
   @ViewChild(NewPeriodDirective) newPeriodHost: NewPeriodDirective;
   private componentFactory: ComponentFactory<NewPeriodComponent>;
   private viewContainerRef: ViewContainerRef;
-  private componentRef;
+  private componentRef: ComponentRef<NewPeriodComponent>;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {
-    this.day = new Day();
-    for (let i = 0; i < 10; i++) {
-      const a = Math.floor(Math.random() * 24);
-      const b = a + Math.floor(Math.random() * (24 - a));
-      this.day.addPeriod(new Period(new Time(a, a), new Time(b, b)));
-    }
   }
 
   ngOnInit() {
-
+    for (let i = 0; i < 10; i++) {
+      const a = Math.floor(Math.random() * 24);
+      const b = a + Math.floor(Math.random() * (24 - a));
+      const t = Math.floor(Math.random() * 10) + 15;
+      this.day.addPeriod(new Period(new Time(a, a), new Time(b, b), t));
+    }
   }
 
   onMouseDown(event): void {
@@ -90,12 +89,12 @@ export class DayComponent implements OnInit {
 
   onMouseOut(event): void {
     event.preventDefault();
-    // this.flag = false;
+    this.flag = false;
   }
 
 
   public addNewPeriod(startHour: number, startMinute: number, finishHour: number, finishMinute: number, temperature: number): void {
-    this.day.addPeriod(new Period(new Time(startHour, startMinute), new Time(finishHour, finishMinute)));
+    this.day.addPeriod(new Period(new Time(startHour, startMinute), new Time(finishHour, finishMinute), temperature));
     if (this.viewContainerRef && this.viewContainerRef.get(0)) {
       this.viewContainerRef.get(0).destroy();
     }

@@ -4,10 +4,12 @@ import {Time} from './Time';
 export class Period {
   public start: Time;
   public finish: Time;
+  public temperature: number;
 
-  constructor(start: Time, finish: Time) {
+  constructor(start: Time, finish: Time, temperature: number) {
     this.start = start;
     this.finish = finish;
+    this.temperature = temperature;
   }
 
   startsAfterStarts(other: Period): boolean {

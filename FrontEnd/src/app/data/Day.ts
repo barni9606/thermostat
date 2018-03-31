@@ -6,7 +6,7 @@ export class Day {
 
   constructor() {
     this.periods = [
-      new Period(new Time(0, 0), new Time(24, 0))
+      new Period(new Time(0, 0), new Time(24, 0), 20)
     ];
   }
 
@@ -27,7 +27,7 @@ export class Day {
     }
 
     if (index > 0 && this.periods[index - 1].finishesAfterFinishes(newP)) {
-      this.periods.splice(index, 0, new Period(newP.finish, this.periods[index - 1].finish));
+      this.periods.splice(index, 0, new Period(newP.finish, this.periods[index - 1].finish, this.periods[index - 1].temperature));
     }
     if (index > 0) {
       this.periods[index - 1].finish = newP.start;
