@@ -10,6 +10,8 @@ import { NewPeriodDirective } from './week/day/new-period/new-period.directive';
 import { NewPeriodComponent } from './week/day/new-period/new-period.component';
 import { ModalModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { WeekService } from './week-service/week.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -24,9 +26,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     ModalModule.forRoot(),
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [WeekService],
   bootstrap: [AppComponent],
   entryComponents: [NewPeriodComponent]
 })

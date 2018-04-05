@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Day} from '../data/Day';
+import {WeekService} from '../week-service/week.service';
 
 @Component({
   selector: 'app-week',
@@ -12,11 +13,10 @@ export class WeekComponent implements OnInit {
   public hours: string[];
   public day_names: object[];
 
-  constructor() {
-    this.days = [];
-    for (let i = 0; i < 7; i++) {
-      this.days.splice(i, 0, new Day());
-    }
+  constructor(private weekService: WeekService) {
+    this.weekService.getWeek().subscribe(data => {
+      this.days = data;
+    });
     this.hours = [
       '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00',
       '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',

@@ -6,7 +6,7 @@ export class Time {
     this.minutes = minutes;
   }
 
-  toString(): string {
-    return this.hours + ':' + this.minutes;
+  static toString(time: Time): string {
+    return time.hours + ':' + time.minutes;
   }
 }

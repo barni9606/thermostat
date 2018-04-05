@@ -12,27 +12,27 @@ export class Period {
     this.temperature = temperature;
   }
 
-  startsAfterStarts(other: Period): boolean {
-    return this.start.hours * 60 + this.start.minutes > other.start.hours * 60 + other.start.minutes;
+  static startsAfterStarts(first: Period, second: Period): boolean {
+    return first.start.hours * 60 + first.start.minutes > second.start.hours * 60 + second.start.minutes;
   }
 
-  startsBeforeFinishes(other: Period): boolean {
-    return this.start.hours * 60 + this.start.minutes < other.finish.hours * 60 + other.finish.minutes;
+  static startsBeforeFinishes(first: Period, second: Period): boolean {
+    return first.start.hours * 60 + first.start.minutes < second.finish.hours * 60 + second.finish.minutes;
   }
 
-  finishesAfterStarts(other: Period): boolean {
-    return this.finish.hours * 60 + this.finish.minutes > other.start.hours * 60 + other.start.minutes;
+  static finishesAfterStarts(first: Period, second: Period): boolean {
+    return first.finish.hours * 60 + first.finish.minutes > second.start.hours * 60 + second.start.minutes;
   }
 
-  finishesAfterFinishes(other: Period): boolean {
-    return this.finish.hours * 60 + this.finish.minutes > other.finish.hours * 60 + other.finish.minutes;
+  static finishesAfterFinishes(first: Period, second: Period): boolean {
+    return first.finish.hours * 60 + first.finish.minutes > second.finish.hours * 60 + second.finish.minutes;
   }
 
-  getHeight(): string {
-    return (this.finish.hours * 60 + this.finish.minutes - (this.start.hours * 60 + this.start.minutes)) / 60 * 40 + 'px';
+  static getHeight(p: Period): string {
+    return (p.finish.hours * 60 + p.finish.minutes - (p.start.hours * 60 + p.start.minutes)) / 60 * 40 + 'px';
   }
 
-  toString(): string {
-    return this.start.toString() + '-' + this.finish.toString();
+  static toString(p: Period): string {
+    return p.start.toString() + '-' + p.finish.toString();
   }
 }

@@ -7,6 +7,7 @@ import {Period} from '../../data/Period';
 import {Time} from '../../data/Time';
 import {NewPeriodDirective} from './new-period/new-period.directive';
 import {NewPeriodComponent} from './new-period/new-period.component';
+import {WeekService} from '../../week-service/week.service';
 
 @Component({
   selector: 'app-day',
@@ -24,16 +25,15 @@ export class DayComponent implements OnInit {
   private viewContainerRef: ViewContainerRef;
   private componentRef: ComponentRef<NewPeriodComponent>;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(private componentFactoryResolver: ComponentFactoryResolver,
+              private weekService: WeekService) {
   }
 
   ngOnInit() {
-    for (let i = 0; i < 10; i++) {
-      const a = Math.floor(Math.random() * 24);
-      const b = a + Math.floor(Math.random() * (24 - a));
-      const t = Math.floor(Math.random() * 10) + 15;
-      this.day.addPeriod(new Period(new Time(a, a), new Time(b, b), t));
-    }
+  }
+
+  getHeight(period: Period): string {
+    return Period.getHeight(period);
   }
 
   onMouseDown(event): void {
@@ -94,7 +94,8 @@ export class DayComponent implements OnInit {
 
 
   public addNewPeriod(startHour: number, startMinute: number, finishHour: number, finishMinute: number, temperature: number): void {
-    this.day.addPeriod(new Period(new Time(startHour, startMinute), new Time(finishHour, finishMinute), temperature));
+    Day.addPeriod(this.day, new Period(new Time(startHour, startMinute), new Time(finishHour, finishMinute), temperature));
+    this.weekService.synchronize(this.dayNumber, this.day).subscribe();
     if (this.viewContainerRef && this.viewContainerRef.get(0)) {
       this.viewContainerRef.get(0).destroy();
     }

@@ -1,7 +1,13 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-1">
-      <button class="primary">Copy</button>
+    <div class="col-lg-1 col-xs-12">
+      <form>
+        <select>
+          <option *ngFor="let day of day_names" value="{{day.number}}">{{day.long}}</option>
+        </select>
+        <div *ngFor="let day of day_names"><input type="checkbox" value="{{day.number}}">{{day.long}}</div>
+        <button class="btn btn-primary">Copy</button>
+      </form>
       <form >
         <div class="form-group">
 
@@ -11,7 +17,7 @@
 
       </form>
     </div>
-    <div class="col-sm-11">
+    <div class="col-lg-11 col-xs-12">
       <app-week></app-week>
 
     </div>
