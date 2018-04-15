@@ -2,6 +2,7 @@ from flask import Flask, request
 import json
 from flask_cors import CORS
 from subprocess import check_output
+import jwt
 app = Flask(__name__)
 CORS(app)
 
@@ -64,4 +65,4 @@ def putWeek(data):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, threaded=True, host='0.0.0.0')

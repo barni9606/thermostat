@@ -1,12 +1,20 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-1 col-xs-12">
+    <div class="col-lg-1 col-xs-2 col-xs-offset-5">
       <form>
-        <select>
-          <option *ngFor="let day of day_names" value="{{day.number}}">{{day.long}}</option>
+        <select [(ngModel)]="fromDay" name="fromDay">
+          <option *ngFor="let day of day_names" [ngValue]="day.number">{{day.long}}</option>
         </select>
-        <div *ngFor="let day of day_names"><input type="checkbox" value="{{day.number}}">{{day.long}}</div>
-        <button class="btn btn-primary">Copy</button>
+        <div *ngFor="let day of day_names">
+          <label>
+            <input type="checkbox"
+                   name="days"
+                   value="{{day.number}}"
+                   [(ngModel)]="day.checked"/>
+            {{day.long}}
+          </label>
+        </div>
+        <button class="btn btn-primary" (click)="copy()">Copy</button>
       </form>
       <form >
         <div class="form-group">

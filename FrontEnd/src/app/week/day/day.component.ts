@@ -27,6 +27,7 @@ export class DayComponent implements OnInit {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private weekService: WeekService) {
+    weekService.setDayObservable.subscribe((data) => this.setPeriods(data));
   }
 
   ngOnInit() {
@@ -95,7 +96,7 @@ export class DayComponent implements OnInit {
 
   public addNewPeriod(startHour: number, startMinute: number, finishHour: number, finishMinute: number, temperature: number): void {
     Day.addPeriod(this.day, new Period(new Time(startHour, startMinute), new Time(finishHour, finishMinute), temperature));
-    this.weekService.synchronize(this.dayNumber, this.day).subscribe();
+    this.weekService.synchronize(this.dayNumber, this.day);
     if (this.viewContainerRef && this.viewContainerRef.get(0)) {
       this.viewContainerRef.get(0).destroy();
     }
@@ -104,6 +105,13 @@ export class DayComponent implements OnInit {
   public removeNewPeriod(): void {
     if (this.viewContainerRef && this.viewContainerRef.get(0)) {
       this.viewContainerRef.get(0).destroy();
+    }
+  }
+
+  private setPeriods(data: object) {
+    if (data && data['dayNumbers'].includes(this.dayNumber)) {
+      this.day = JSON.parse(JSON.stringify(data['from']));
+      this.weekService.synchronize(this.dayNumber, this.day);
     }
   }
 

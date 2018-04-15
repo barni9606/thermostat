@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Day } from '../data/Day';
 import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class WeekService {
 
-  backend = 'http://localhost:5000';
+  private setDaySubject = new BehaviorSubject<object>(null);
+  setDayObservable = this.setDaySubject.asObservable();
+  backend = window.location.protocol + '//' + window.location.hostname + ':5000';
   days: Day[];
+  private syncDelay = false;
 
   constructor(private http: HttpClient) { }
 
@@ -19,13 +23,24 @@ export class WeekService {
 
   synchronize(dayNumber: number, day: Day) {
     if (this.days) {
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', 'application/json');
       this.days.splice(dayNumber, 1, day);
-      return this.http.put(this.backend + '/week', this.days, {headers: headers});
+      if (this.syncDelay) {
+        return;
+      }
+      this.syncDelay = true;
+      setTimeout(() => {
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        this.http.put(this.backend + '/week', this.days, {headers: headers}).subscribe();
+        this.syncDelay = false;
+      }, 1000);
     } else {
       throw new Error();
     }
+  }
+
+  setDays(dayNumbers: number[], from: number): void {
+    this.setDaySubject.next({'dayNumbers': dayNumbers, 'from': this.days[from]});
   }
 
 }
