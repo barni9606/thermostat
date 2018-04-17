@@ -2,7 +2,8 @@ from flask import Flask, request
 import json
 from flask_cors import CORS
 from subprocess import check_output
-import jwt
+# import jwt
+from mysocket import Socket
 app = Flask(__name__)
 CORS(app)
 
@@ -26,6 +27,15 @@ def week():
         return data
     elif request.method == "PUT":
         return putWeek(request.json)
+
+@app.route("/socket-test", methods=["PUT"])
+def socket():
+    req = request.data
+    sock = Socket()
+    sock.connect('127.0.0.1', 5001)
+    print(req)
+    sock.send(req)
+    return "asd"
 
 
 def getTempC():
