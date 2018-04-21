@@ -26,15 +26,18 @@ def week():
         data = open('week.json').read()
         return data
     elif request.method == "PUT":
-        return putWeek(request.json)
+        resp = putWeek(request.json)
+        sock = Socket()
+        sock.connect('127.0.0.1', 5001)
+        sock.send(b'azd')
+        return resp
+
 
 @app.route("/socket-test", methods=["PUT"])
 def socket():
-    req = request.data
     sock = Socket()
     sock.connect('127.0.0.1', 5001)
-    print(req)
-    sock.send(req)
+    sock.send(b'azd')
     return "asd"
 
 

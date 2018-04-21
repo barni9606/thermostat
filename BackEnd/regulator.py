@@ -1,18 +1,89 @@
 import socket
 from mysocket import Socket
+from threading import Thread, Lock
+import time
+import json
+from datetime import datetime
 
-serversocket = socket.socket(
+try:
+    import RPi.GPIO as GPIO
+except RuntimeError:
+    print("Error importing RPi.GPIO!")
+gpio_number = 17
+
+week = None
+lock = Lock()
+# w1Loc = '/sys/bus/w1/devices/28-5ec67b126461'
+w1Loc = '.'
+
+
+def getTempC():
+    f = open(w1Loc + '/w1_slave', 'r')
+    return float(f.read().split('=')[2]) / 1000
+
+
+def activate_relay():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(gpio_number, GPIO.OUT)
+    GPIO.output(gpio_number, GPIO.HIGH)
+    GPIO.cleanup()
+
+
+def deactivate_relay():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(gpio_number, GPIO.OUT)
+    GPIO.output(gpio_number, GPIO.LOW)
+    GPIO.cleanup()
+
+
+class Regulator(Thread):
+
+    def run(self):
+        while True:
+            with lock:
+                day = datetime.today().weekday()
+                now = datetime.now().time()
+                period = None
+                for i in week[day]["periods"]:
+                    start = week[day]["periods"][i]["start"]["hours"] * 60 \
+                            + week[day]["periods"][i]["start"]["minutes"]
+                    finish = week[day]["periods"][i]["finish"]["hours"] * 60 \
+                            + week[day]["periods"][i]["finish"]["minutes"]
+                    if start < now.hour * 60 + now.minute < finish:
+                        period = i
+                        break
+                temp = week[day]["periods"][period]["temperature"]
+                current_temp = getTempC()
+                if temp > current_temp:
+                    activate_relay()
+                else:
+                    deactivate_relay()
+            time.sleep(30)
+
+
+def read():
+    with open('week.json', 'r') as f:
+        global week
+        f.seek(0)
+        week = json.load(f)
+
+
+read()
+r = Regulator()
+r.start()
+
+server_socket = socket.socket(
     socket.AF_INET, socket.SOCK_STREAM)
-serversocket.bind(('', 5001))
-#become a server socket
-serversocket.listen(1)
+server_socket.bind(('', 5001))
+# become a server socket
+server_socket.listen(1)
 
 while 1:
-    #accept connections from outside
-    (clientsocket, address) = serversocket.accept()
-    #now do something with the clientsocket
-    conn = Socket(clientsocket)
+    # accept connections from outside
+    (client_socket, address) = server_socket.accept()
+    # now do something with the clientsocket
+    conn = Socket(client_socket)
     # sock.connect('localhost', 5001)
-    with open("test.txt", "w") as f:
-        f.write(conn.receive())
-        f.flush()
+    if conn.receive() == 'azd':
+        read()
+        print(week)

@@ -3,7 +3,7 @@ import socket
 
 class Socket:
 
-    MSGLEN = 2048
+    MSGLEN = 3
 
     def __init__(self, sock=None):
         if sock is None:
@@ -30,7 +30,7 @@ class Socket:
         chunks = []
         bytes_recd = 0
         while bytes_recd < Socket.MSGLEN:
-            chunk = self.sock.recv(min(Socket.MSGLEN - bytes_recd, 2048)).decode()
+            chunk = self.sock.recv(min(Socket.MSGLEN - bytes_recd, 3)).decode()
             if chunk == '':
                 raise RuntimeError("socket connection broken")
             chunks.append(chunk)
