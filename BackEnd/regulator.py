@@ -45,14 +45,12 @@ class Regulator(Thread):
                 now = datetime.now().time()
                 period = None
                 for i in week[day]["periods"]:
-                    start = week[day]["periods"][i]["start"]["hours"] * 60 \
-                            + week[day]["periods"][i]["start"]["minutes"]
-                    finish = week[day]["periods"][i]["finish"]["hours"] * 60 \
-                            + week[day]["periods"][i]["finish"]["minutes"]
+                    start = i["start"]["hours"] * 60 + i["start"]["minutes"]
+                    finish = i["finish"]["hours"] * 60 + i["finish"]["minutes"]
                     if start < now.hour * 60 + now.minute < finish:
                         period = i
                         break
-                temp = week[day]["periods"][period]["temperature"]
+                temp = period["temperature"]
                 current_temp = getTempC()
                 if temp > current_temp:
                     activate_relay()
