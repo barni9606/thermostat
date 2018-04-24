@@ -4,19 +4,13 @@ from threading import Thread, Lock
 import time
 import json
 from datetime import datetime
-
-try:
-    import RPi.GPIO as GPIO
-except RuntimeError:
-    print("Error importing RPi.GPIO!")
+import RPi.GPIO as GPIO
 gpio_number = 17
 
 week = None
 lock = Lock()
 # w1Loc = '/sys/bus/w1/devices/28-5ec67b126461'
 w1Loc = '.'
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(gpio_number, GPIO.OUT)
 
 
 def getTempC():
@@ -25,11 +19,11 @@ def getTempC():
 
 
 def activate_relay():
-    GPIO.output(gpio_number, GPIO.HIGH)
+    GPIO.output(gpio_number, GPIO.LOW)
 
 
 def deactivate_relay():
-    GPIO.output(gpio_number, GPIO.LOW)
+    GPIO.output(gpio_number, GPIO.HIGH)
 
 
 class Regulator(Thread):
@@ -43,11 +37,15 @@ class Regulator(Thread):
                 for i in week[day]["periods"]:
                     start = i["start"]["hours"] * 60 + i["start"]["minutes"]
                     finish = i["finish"]["hours"] * 60 + i["finish"]["minutes"]
-                    if start <= now.hour * 60 + now.minute <= finish:
+                    if start <= now.hour * 60 + now.minute < finish:
                         period = i
                         break
                 temp = period["temperature"]
             current_temp = getTempC()
+            print("time: " + str(now.hour) + ":" + str(now.minute))
+            print("temp: " + str(temp) + ", current temp: " + str(current_temp))
+            print(period)
+
             if temp > current_temp:
                 activate_relay()
             else:
@@ -64,6 +62,8 @@ def read():
 
 
 try:
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(gpio_number, GPIO.OUT)
     read()
     r = Regulator()
     r.start()
@@ -85,3 +85,4 @@ try:
             print(week)
 finally:
     GPIO.cleanup()
+    r.join()
