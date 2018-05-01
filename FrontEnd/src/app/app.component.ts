@@ -18,9 +18,20 @@ export class AppComponent {
     { 'long': 'Vasárnap',  'short': 'V',   'number': 6, 'checked': false }
   ];
   public fromDay: number;
+  public localTemp: number;
+  public localTime: string;
 
   constructor(private weekService: WeekService) {
-
+    weekService.getLocalTimeAndTemp().subscribe((t) => {
+      this.localTime = t['time'];
+      this.localTemp = t['temp'];
+    });
+    setInterval(() => {
+      weekService.getLocalTimeAndTemp().subscribe((t) => {
+        this.localTime = t['time'];
+        this.localTemp = t['temp'];
+      });
+    }, 1000 * 60);
   }
 
   copy() {

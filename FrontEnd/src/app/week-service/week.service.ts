@@ -43,4 +43,10 @@ export class WeekService {
     this.setDaySubject.next({'dayNumbers': dayNumbers, 'from': this.days[from]});
   }
 
+  public getLocalTimeAndTemp(): Observable<object> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'text/html');
+    return this.http.get<object>(this.backend + '/local-time-and-temp', {headers: headers});
+  }
+
 }
