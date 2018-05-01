@@ -80,7 +80,7 @@ try:
         # now do something with the clientsocket
         conn = Socket(client_socket)
         # sock.connect('localhost', 5001)
-        if conn.receive() == 'azd':
+        if conn.receive() == 'asd':
             read()
             print(week)
 finally:

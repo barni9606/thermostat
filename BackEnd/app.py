@@ -4,6 +4,7 @@ from flask_cors import CORS
 from subprocess import check_output
 # import jwt
 from mysocket import Socket
+from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
@@ -20,6 +21,13 @@ def temperature():
         return setTemp(req["temp"], req["mode"])
 
 
+@app.route("/local-time-and-temp")
+def time_and_temp():
+    now = datetime.now().time()
+    data = {"time": str(now.hour) + ":" + str(now.minute), "temp": getTempC()}
+    return json.dumps(data)
+
+
 @app.route("/week", methods=["GET", "PUT"])
 def week():
     if request.method == "GET":
@@ -29,7 +37,7 @@ def week():
         resp = putWeek(request.json)
         sock = Socket()
         sock.connect('127.0.0.1', 5001)
-        sock.send(b'azd')
+        sock.send(b'asd')
         return resp
 
 
@@ -37,7 +45,7 @@ def week():
 def socket():
     sock = Socket()
     sock.connect('127.0.0.1', 5001)
-    sock.send(b'azd')
+    sock.send(b'asd')
     return "asd"
 
 
